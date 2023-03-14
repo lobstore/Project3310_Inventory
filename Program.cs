@@ -14,13 +14,13 @@ namespace Project3310_Inventory
             {
                 while (true)
                 {
-                    inventory = await Receive(inventory);
+
                     Console.Clear();
                     foreach (char c in inventory)
                     {
                         Console.Write(c);
                     }
-
+                    inventory = await Receive(inventory);
                 }
             });
 
@@ -49,7 +49,7 @@ namespace Project3310_Inventory
                             }
                             break;
                         case ConsoleKey.Q:
-                            Console.SetCursorPosition(iterator,0);
+                            Console.SetCursorPosition(iterator, 0);
                             Console.Write(inventory[iterator]);
                             inventory.RemoveAt(iterator);
                             Console.Clear();
