@@ -8,6 +8,7 @@ namespace Project3310_Inventory
     {
         static void Main(string[] args)
         {
+            //!
             List<char> inventory = new List<char>(' ');
             int iterator = 0;
             Task.Run(async () =>
