@@ -8,25 +8,23 @@ namespace Project3310_Inventory
     {
         static void Main(string[] args)
         {
-            //
             List<char> inventory = new List<char>(' ');
+            //
             int iterator = 0;
             Task.Run(async () =>
             {
                 while (true)
                 {
-
+                    inventory = await Receive(inventory);
                     Console.Clear();
                     foreach (char c in inventory)
                     {
                         Console.Write(c);
                     }
-                    inventory = await Receive(inventory);
                 }
             });
 
-
-
+            ///Основной цикл обновлений для контроля инвентаря
             while (true)
             {
                 if (inventory.Count > 0)
@@ -53,9 +51,10 @@ namespace Project3310_Inventory
                             Console.SetCursorPosition(iterator, 0);
                             Console.Write(inventory[iterator]);
                             inventory.RemoveAt(iterator);
+                            Send(inventory);
                             Console.Clear();
-                            //TODO вызов метода Send для возвращения измененного массива инвентаря
                             break;
+
 
                     }
                     Console.SetCursorPosition(0, 0);
@@ -66,6 +65,9 @@ namespace Project3310_Inventory
                 }
 
             }
+            /// <summary>
+            /// Отправка текущего состояния инвентаря
+            /// </summary>
             static async void Send(List<char> inventory)
             {
                 using var udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -76,6 +78,10 @@ namespace Project3310_Inventory
                 Console.WriteLine($"Отправлено {bytes} байт");
             }
 
+            /// <summary>
+            /// Получение изменений из инвентаря процесса Project_3310.exe
+            /// </summary>
+            /// <returns>Задача выполняющая возврат листа с инвентарем</returns>
             static async Task<List<char>> Receive(List<char> inventory)
             {
 
@@ -96,6 +102,7 @@ namespace Project3310_Inventory
                 return inventory;
 
             }
+
         }
 
     }
